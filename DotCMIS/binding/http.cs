@@ -268,7 +268,14 @@ namespace DotCMIS.Binding.Impl
                         if (method != "GET" || !ExceptionFixabilityDecider.CanExceptionBeFixedByRetry(we) || retry == maxRetries) {
                             watch.Stop();
                             Trace.WriteLineIf(DotCMISDebug.DotCMISSwitch.TraceInfo, string.Format("[{0}] received response after {1} ms", tag.ToString(), watch.ElapsedMilliseconds.ToString()));
-                            return new Response(we);
+                            if (we.Response != null)
+                            {
+                                return new Response(we);
+                            }
+                            else
+                            {
+                                throw;
+                            }
                         }
 
                         retry++;
